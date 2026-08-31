@@ -1,0 +1,88 @@
+# === Xcode ===
+*.xcodeproj/
+*.xcworkspace/
+*.xcuserstate
+*.xcuserdatad/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Xcode 14+
+*.xcuserstate
+*.xcuserdatad/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+
+# === Swift Package Manager ===
+.build/
+.swiftpm/
+Package.resolved
+*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# === CocoaPods ===
+Pods/
+Podfile.lock
+
+# === Carthage ===
+Carthage/
+*.framework
+
+# === Firebase ===
+GoogleService-Info.plist
+Firebase/ServiceAccount.json
+*.p12
+*.p8
+
+# === macOS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# === iOS ===
+*.app
+*.app.dSYM.zip
+*.ipa
+*.dSYM
+*.xcarchive
+
+# === Temp files ===
+*.tmp
+*.swp
+*~
+*.log
+*.cache
+*.lock
+
+# === User-specific ===
+*.mode1v3
+*.pbxuser
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+
+# === Fastlane ===
+fastlane/report.xml
+fastlane/test_output
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/screenshots/screenshots.html
+
+# === Code Coverage ===
+*.gcda
+*.gcno
+*.gcov
+coverage/
+
+# === CI/CD ===
+*.travis.yml
+*.circleci/
+*.github/workflows/
+
+
+
