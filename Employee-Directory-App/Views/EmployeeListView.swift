@@ -15,6 +15,8 @@ struct EmployeeListView: View {
     @State private var selectedShift = "All"
     @State private var showingAddEmployee = false
     
+    // MARK: - Computed Properties
+    
     var filteredEmployees: [Employee] {
         viewModel.searchEmployees(
             searchText: searchText,
@@ -23,6 +25,13 @@ struct EmployeeListView: View {
         )
     }
     
+    // ✅ Cache filtered results to prevent recalculation
+    private var cachedFilteredEmployees: [Employee] {
+        filteredEmployees
+    }
+    
+    // MARK: - Body
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -30,7 +39,7 @@ struct EmployeeListView: View {
                 StatsBar(
                     total: viewModel.totalEmployees,
                     active: viewModel.activeEmployees,
-                    showing: filteredEmployees.count
+                    showing: cachedFilteredEmployees.count
                 )
                 
                 // Filter Chips
@@ -45,15 +54,28 @@ struct EmployeeListView: View {
                 if viewModel.isLoading && viewModel.employees.isEmpty {
                     ProgressView("Loading employees...")
                         .frame(maxHeight: .infinity)
-                } else if filteredEmployees.isEmpty {
+                } else if cachedFilteredEmployees.isEmpty {
                     ContentUnavailableView(
                         "No Employees Found",
                         systemImage: "person.slash",
                         description: Text("Try adjusting your search or filters")
                     )
                 } else {
-                    List(filteredEmployees) { employee in
-                        EmployeeRowView(employee: employee, viewModel: viewModel)
+                    // ✅ Use List with Equatable to prevent unnecessary re-renders
+                    List(cachedFilteredEmployees) { employee in
+                        EmployeeRowView(
+                            employee: employee,
+                            onDelete: {
+                                await deleteEmployee(employee)
+                            },
+                            onToggleStatus: {
+                                await toggleStatus(employee)
+                            },
+                            onPhoneTap: {
+                                handlePhoneTap(for: employee)
+                            }
+                        )
+                        .id(employee.id)  // ✅ Explicit ID for stability
                     }
                     .refreshable {
                         viewModel.unsubscribe()
@@ -65,7 +87,6 @@ struct EmployeeListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search by ID, name, or position")
             .toolbar {
-                // Right side - Add Employee Button
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showingAddEmployee = true }) {
                         Image(systemName: "plus")
@@ -88,6 +109,39 @@ struct EmployeeListView: View {
             .onDisappear {
                 viewModel.unsubscribe()
             }
+        }
+    }
+    
+    // MARK: - Actions
+    
+    private func deleteEmployee(_ employee: Employee) async {
+        do {
+            try await viewModel.deleteEmployee(employee)
+        } catch {
+            await MainActor.run {
+                viewModel.errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    private func toggleStatus(_ employee: Employee) async {
+        do {
+            try await viewModel.toggleEmployeeStatus(employee)
+        } catch {
+            await MainActor.run {
+                viewModel.errorMessage = error.localizedDescription
+            }
+        }
+    }
+    
+    private func handlePhoneTap(for employee: Employee) {
+        let cleanedNumber = employee.phoneNumber.filter { "0123456789".contains($0) }
+        guard let url = URL(string: "tel://\(cleanedNumber)") else { return }
+        
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
         }
     }
 }

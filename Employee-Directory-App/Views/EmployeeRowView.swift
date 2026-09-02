@@ -9,7 +9,10 @@ import SwiftUI
 
 struct EmployeeRowView: View {
     let employee: Employee
-    let viewModel: EmployeeViewModel
+    // ✅ Instead of passing whole ViewModel, pass only what's needed
+    let onDelete: () async -> Void
+    let onToggleStatus: () async -> Void
+    let onPhoneTap: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -46,6 +49,7 @@ struct EmployeeRowView: View {
                 Label(employee.department, systemImage: "building.2")
                     .font(.caption)
                     .foregroundColor(.blue)
+                    .lineLimit(1)
                 
                 Spacer()
                 
@@ -59,12 +63,15 @@ struct EmployeeRowView: View {
             
             if !employee.phoneNumber.isEmpty {
                 HStack {
-                    Image(systemName: "phone")
+                    Image(systemName: "phone.fill")
                         .font(.caption)
                         .foregroundColor(.green)
-                    Text(employee.phoneNumber)
+                    Text(employee.formattedPhoneNumber)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.blue)
+                }
+                .onTapGesture {
+                    onPhoneTap()
                 }
             }
         }
@@ -72,7 +79,7 @@ struct EmployeeRowView: View {
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
                 Task {
-                    try? await viewModel.deleteEmployee(employee)
+                    await onDelete()
                 }
             } label: {
                 Label("Delete", systemImage: "trash")
@@ -80,7 +87,7 @@ struct EmployeeRowView: View {
             
             Button {
                 Task {
-                    try? await viewModel.toggleEmployeeStatus(employee)
+                    await onToggleStatus()
                 }
             } label: {
                 Label(employee.isActive ? "Deactivate" : "Activate",
@@ -88,5 +95,14 @@ struct EmployeeRowView: View {
             }
             .tint(employee.isActive ? .orange : .green)
         }
+    }
+}
+
+// MARK: - Equatable for Performance
+extension EmployeeRowView: Equatable {
+    static func == (lhs: EmployeeRowView, rhs: EmployeeRowView) -> Bool {
+        lhs.employee.id == rhs.employee.id &&
+        lhs.employee.isActive == rhs.employee.isActive &&
+        lhs.employee.phoneNumber == rhs.employee.phoneNumber
     }
 }
