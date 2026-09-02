@@ -87,6 +87,19 @@ struct EmployeeListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search by ID, name, or position")
             .toolbar {
+                
+                
+#if DEBUG
+//                ToolbarItem(placement: .topBarLeading) {
+//                    Button {
+//                        Task {
+//                            await importAllEmployees()
+//                        }
+//                    } label: {
+//                        Image(systemName: "square.and.arrow.down")
+//                    }
+//                }
+#endif
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showingAddEmployee = true }) {
                         Image(systemName: "plus")
@@ -111,6 +124,7 @@ struct EmployeeListView: View {
             }
         }
     }
+    
     
     // MARK: - Actions
     
@@ -144,6 +158,7 @@ struct EmployeeListView: View {
             generator.notificationOccurred(.success)
         }
     }
+    
 }
 
 // MARK: - Stats Bar
