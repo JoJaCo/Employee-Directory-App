@@ -16,21 +16,12 @@ struct LoginView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background Gradient
-                LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color.blue.opacity(0.1),
-                        Color.white
-                    ]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                // White background (always light)
+                Color.white.ignoresSafeArea()
                 
                 VStack(spacing: 30) {
                     // MARK: - Logo Section
                     VStack(spacing: 12) {
-                        // Company Logo Placeholder
                         ZStack {
                             Circle()
                                 .fill(Color.blue.opacity(0.15))
@@ -44,10 +35,11 @@ struct LoginView: View {
                         Text("Employee Directory")
                             .font(.title)
                             .fontWeight(.bold)
+                            .foregroundColor(.black)  // ✅ Always black
                         
                         Text("Access your team's information")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.gray)  // ✅ Always gray
                     }
                     .padding(.top, 40)
                     
@@ -58,7 +50,7 @@ struct LoginView: View {
                             Text("Email")
                                 .font(.caption)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.gray)
                             
                             HStack {
                                 Image(systemName: "envelope")
@@ -68,12 +60,14 @@ struct LoginView: View {
                                 TextField("Enter your email", text: $email)
                                     .textInputAutocapitalization(.never)
                                     .keyboardType(.emailAddress)
+                                    .foregroundColor(.black)  // ✅ Always black
+                                    .accentColor(.blue)  // Cursor color
                             }
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(.systemBackground))
-                                    .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
+                                    .fill(Color.white)  // ✅ Always white
+                                    .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
                             )
                         }
                         
@@ -82,7 +76,7 @@ struct LoginView: View {
                             Text("Password")
                                 .font(.caption)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.gray)
                             
                             HStack {
                                 Image(systemName: "lock")
@@ -91,8 +85,12 @@ struct LoginView: View {
                                 
                                 if showPassword {
                                     TextField("Enter your password", text: $password)
+                                        .foregroundColor(.black)  // ✅ Always black
+                                        .accentColor(.blue)
                                 } else {
                                     SecureField("Enter your password", text: $password)
+                                        .foregroundColor(.black)  // ✅ Always black
+                                        .accentColor(.blue)
                                 }
                                 
                                 Button {
@@ -105,8 +103,8 @@ struct LoginView: View {
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(.systemBackground))
-                                    .shadow(color: .gray.opacity(0.1), radius: 5, x: 0, y: 2)
+                                    .fill(Color.white)  // ✅ Always white
+                                    .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2)
                             )
                         }
                     }
@@ -114,7 +112,6 @@ struct LoginView: View {
                     
                     // MARK: - Sign In Button
                     Button {
-                        // For now, just navigate to employee list
                         isLoggedIn = true
                     } label: {
                         HStack {
@@ -152,6 +149,7 @@ struct LoginView: View {
                     VStack {
                         Divider()
                             .padding(.horizontal)
+                            .background(Color.gray.opacity(0.3))
                         
                         Button {
                             isLoggedIn = true
@@ -173,10 +171,10 @@ struct LoginView: View {
                     .navigationBarBackButtonHidden(true)
             }
         }
+        .preferredColorScheme(.light)  // ✅ FORCE LIGHT MODE
     }
 }
 
-// MARK: - Preview
 #Preview {
     LoginView()
 }
