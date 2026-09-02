@@ -97,3 +97,12 @@ DerivedData/
 # Swift Package Manager (optional - keep or ignore)
 # Employee-Directory-App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
+
+# === Xcode User Data ===
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+
+# === Default Files ===
+ContentView.swift
+Employee_Directory_AppApp.swift
