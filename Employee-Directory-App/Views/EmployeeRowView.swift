@@ -106,3 +106,4 @@ extension EmployeeRowView: Equatable {
         lhs.employee.phoneNumber == rhs.employee.phoneNumber
     }
 }
+
