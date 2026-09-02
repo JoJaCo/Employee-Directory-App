@@ -112,3 +112,8 @@ DerivedData/
 # Old default files
 ContentView.swift
 Employee_Directory_AppApp.swift
+GoogleService-Info.plist
+xcuserdata/
+*.xcuserdatad/
+ContentView.swift
+Employee_Directory_AppApp.swift
