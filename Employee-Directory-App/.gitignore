@@ -84,5 +84,16 @@ coverage/
 *.circleci/
 *.github/workflows/
 
+# Firebase
+GoogleService-Info.plist
 
+# Xcode user data
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+
+# Swift Package Manager (optional - keep or ignore)
+# Employee-Directory-App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
