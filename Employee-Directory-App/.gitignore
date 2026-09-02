@@ -97,23 +97,14 @@ DerivedData/
 # Swift Package Manager (optional - keep or ignore)
 # Employee-Directory-App.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 
-# Firebase (SECURITY!)
-GoogleService-Info.plist
 
-# Xcode user data
+# === Xcode User Data ===
 xcuserdata/
 *.xcuserdatad/
 *.xcuserstate
-DerivedData/
 
-# macOS
-.DS_Store
-
-# Old default files
+# === Default Files ===
 ContentView.swift
 Employee_Directory_AppApp.swift
-GoogleService-Info.plist
-xcuserdata/
+Employee-Directory-App.xcodeproj/xcuserdata/
 *.xcuserdatad/
-ContentView.swift
-Employee_Directory_AppApp.swift
